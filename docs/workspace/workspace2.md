@@ -1,4 +1,9 @@
 ﻿# Workspace2 日志（Stage 2 桌面端）
+## 2025-11-05 10:20
+
+- 实现 `DeviceScanner` 并在 Sync 面板提供“扫描设备”按钮，状态表展示 ADB 序列号与扫描结果。
+- 扩充 Sync 面板，新增日志记录区与清空功能，便于追踪 push/pull 操作。
+- 重构 MainWindow：加入左侧导航（设备选择 + 待推送批次列表）与标签页布局，导航与 Sync 面板同步更新。
 
 ## 2025-11-05 09:10
 
@@ -32,7 +37,8 @@
 ## 2025-11-04 19:30
 
 - 完成桌面端 SyncService（push/pull、状态落盘、配置解析）。
-- 新增 	ests/desktop/test_sync_service.py 并通过 pytest；记录日志到 eports/testlogs/workspace2_pytest_20251104_1930.txt（待补充真实文件）。
+- 新增 	ests/desktop/test_sync_service.py 并通过 pytest；记录日志到 
+eports/testlogs/workspace2_pytest_20251104_1930.txt（待补充真实文件）。
 - 调整 pyproject.toml lint 配置与 docs/workspace/sync_contract.md 规范说明。
 
 ## 2025-11-04 17:15

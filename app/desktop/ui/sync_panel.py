@@ -1,4 +1,6 @@
-from __future__ import annotations
+﻿from __future__ import annotations
+
+from datetime import datetime
 
 from PySide6.QtWidgets import (
     QGroupBox,
@@ -26,6 +28,7 @@ class SyncPanel(QWidget):
         self.viewmodel = viewmodel or SyncViewModel()
         self.queue_snapshot: dict[str, int] = {}
         self.scan_status: dict[str, str] = {}
+        self.log_entries: list[tuple[str, str]] = []
         self._init_ui()
         self._wire_signals()
         add_panel_header(self, ACCENT)
@@ -41,6 +44,7 @@ class SyncPanel(QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(self._build_device_box())
         layout.addWidget(self._build_queue_box())
+        layout.addWidget(self._build_log_box())
         layout.addStretch(1)
 
     def _build_device_box(self) -> QGroupBox:
@@ -88,6 +92,21 @@ class SyncPanel(QWidget):
         layout.addWidget(self.queue_list)
         return box
 
+    def _build_log_box(self) -> QGroupBox:
+        box = QGroupBox("最近操作日志")
+        layout = QVBoxLayout(box)
+        self.log_table = QTableWidget(0, 2)
+        self.log_table.setHorizontalHeaderLabels(["时间", "消息"])
+        self.log_table.horizontalHeader().setStretchLastSection(True)
+        btn_row = QHBoxLayout()
+        self.clear_log_btn = QPushButton("清除日志")
+        self.clear_log_btn.clicked.connect(self._clear_logs)
+        btn_row.addStretch(1)
+        btn_row.addWidget(self.clear_log_btn)
+        layout.addWidget(self.log_table)
+        layout.addLayout(btn_row)
+        return box
+
     def register_bundles(self, bundles) -> None:
         self.viewmodel.register_bundles(bundles)
 
@@ -126,6 +145,13 @@ class SyncPanel(QWidget):
     def _notify(self, text: str) -> None:
         if self.status_bar:
             self.status_bar.showMessage(text, 3000)
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        self.log_entries.append((timestamp, text))
+        self._append_log_row(timestamp, text)
+
+    def _clear_logs(self) -> None:
+        self.log_entries.clear()
+        self.log_table.setRowCount(0)
 
     def _on_scan_completed(self, devices) -> None:
         if isinstance(devices, list):
@@ -139,3 +165,10 @@ class SyncPanel(QWidget):
         else:
             self.scan_status = {}
         self.viewmodel.refresh_status()
+
+    def _append_log_row(self, timestamp: str, message: str) -> None:
+        row = self.log_table.rowCount()
+        self.log_table.insertRow(row)
+        self.log_table.setItem(row, 0, QTableWidgetItem(timestamp))
+        self.log_table.setItem(row, 1, QTableWidgetItem(message))
+        self.log_table.scrollToBottom()
