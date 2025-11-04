@@ -1,32 +1,39 @@
-﻿"""配置数据模型定义。"""
+"""数据配置模型定义。"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, Mapping, Sequence, Tuple
+from typing import Mapping, Sequence, Tuple
 
 
 @dataclass(frozen=True)
 class PriceConfig:
-    """价格设置，支持随机尾数。"""
+    """价格设置，可随机生成小数尾数。"""
 
     base_yuan: float
     keep_decimal: bool = True
     random_tail: bool = True
     tail_candidates: Sequence[int] = field(
         default_factory=lambda: tuple(range(0, 100))
-    )  # 0-99 可选
+    )
 
     def derive_price(self, seed: int | None = None) -> float:
         import random
 
-        rng = random.Random(seed)
         if not self.keep_decimal:
             return round(self.base_yuan)
 
         if self.random_tail and self.tail_candidates:
-            tail = rng.choice(list(self.tail_candidates))
-            return float(f"{int(self.base_yuan)}.{tail:02d}")
+            tails = list(self.tail_candidates)
+            if not tails:
+                return round(self.base_yuan, 2)
+            if seed is not None:
+                tail = tails[seed % len(tails)]
+            else:
+                tail = random.choice(tails)
+            whole = int(self.base_yuan)
+            return float(f"{whole}.{tail:02d}")
         return round(self.base_yuan, 2)
 
 
@@ -34,8 +41,8 @@ class PriceConfig:
 class DelayConfig:
     """执行延迟配置（毫秒/分钟）。"""
 
-    micro_delay_ms: tuple[int, int] = (1500, 4000)
-    macro_delay_min: tuple[int, int] = (10, 45)
+    micro_delay_ms: Tuple[int, int] = (1500, 4000)
+    macro_delay_min: Tuple[int, int] = (10, 45)
 
     def validate(self) -> None:
         low, high = self.micro_delay_ms
@@ -67,7 +74,7 @@ class DeviceAssignment:
 class GenerationTemplate:
     """文案生成模板配置。"""
 
-    category: str  # 例如 tee/hoodie/outerwear
+    category: str
     variations: int = 3
     allow_sensitive_replacement: bool = True
 
@@ -76,7 +83,7 @@ class GenerationTemplate:
 class SensitiveDictionary:
     """敏感词与品牌别名配置。"""
 
-    sensitive_words: tuple[str, ...] = ()
+    sensitive_words: Tuple[str, ...] = ()
     brand_alias_mapping: Mapping[str, str] = field(default_factory=dict)
 
 
@@ -118,10 +125,10 @@ class StyleMeta:
 
     style_code: str
     price_override: float | None = None
-    colors: tuple[str, ...] = ()
-    sizes: tuple[str, ...] = ()
+    colors: Tuple[str, ...] = ()
+    sizes: Tuple[str, ...] = ()
     stock_per_variant: int | None = None
-    macro_delay_override: tuple[int, int] | None = None
+    macro_delay_override: Tuple[int, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -135,7 +142,7 @@ class ManifestEntry:
     description_files: Sequence[Path]
     image_files: Sequence[Path]
     price: float
-    macro_delay_min: tuple[int, int]
+    macro_delay_min: Tuple[int, int]
 
 
 __all__ = [

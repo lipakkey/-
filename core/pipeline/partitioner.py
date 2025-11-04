@@ -1,4 +1,5 @@
-﻿"""任务分配与导出。""""
+"""任务分配与导出逻辑。"""
+
 from __future__ import annotations
 
 import json
@@ -17,6 +18,8 @@ class TaskBatch:
 
 
 class TaskPartitioner:
+    """将生成好的任务分配到各设备批次目录。"""
+
     def __init__(self, config: CentralKitchenConfig) -> None:
         self.config = config
 
@@ -49,15 +52,15 @@ class TaskPartitioner:
                 encoding="utf-8",
             )
 
-    def _entry_info(self, entry: ManifestEntry) -> dict[str, str | float | list[str]]:
+    def _entry_info(self, entry: ManifestEntry) -> dict[str, object]:
         return {
             "style_code": entry.style_code,
             "title_file": str(Path(entry.style_code) / "text" / entry.title_file.name),
             "description_files": [
-                str(Path(entry.style_code) / "text" / p.name) for p in entry.description_files
+                str(Path(entry.style_code) / "text" / path.name) for path in entry.description_files
             ],
             "images": [
-                str(Path(entry.style_code) / "images" / p.name) for p in entry.image_files
+                str(Path(entry.style_code) / "images" / path.name) for path in entry.image_files
             ],
             "price": entry.price,
             "macro_delay": entry.macro_delay_min,

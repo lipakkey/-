@@ -1,0 +1,11 @@
+﻿# sample device map
+# copy to config/device_map.yaml and edit for real usage
+
+- device_id: device1
+  adb_serial: "ABCDEF123456"
+  push_path: "/sdcard/XianyuTasks/Todo"
+  pull_path: "/sdcard/XianyuTasks/Done"
+- device_id: device2
+  adb_serial: "123456ABCDEF"
+  push_path: "/sdcard/XianyuTasks/Todo"
+  pull_path: "/sdcard/XianyuTasks/Done"

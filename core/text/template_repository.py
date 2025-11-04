@@ -1,14 +1,13 @@
-﻿"""文案模板加载。"""
+"""文案模板加载工具。"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from importlib import resources
-from typing import Mapping
 
 import yaml
 
-
-_TEMPLATE_PKG = "core.text.templates"
+_TEMPLATE_PKG = "core.text.templates_store"
 
 
 @dataclass(frozen=True)
@@ -18,6 +17,8 @@ class TemplateDefinition:
 
 
 class TemplateRepository:
+    """从内置 YAML 模板中读取文案骨架。"""
+
     def __init__(self) -> None:
         self._cache: dict[str, TemplateDefinition] = {}
 
@@ -28,14 +29,18 @@ class TemplateRepository:
 
     def _load(self, category: str) -> TemplateDefinition:
         try:
-            with resources.open_text(_TEMPLATE_PKG, f"{category}.yaml", encoding="utf-8") as fh:
-                data = yaml.safe_load(fh) or {}
+            content = (
+                resources.files(_TEMPLATE_PKG)
+                .joinpath(f"{category}.yaml")
+                .read_text(encoding="utf-8")
+            )
         except FileNotFoundError as exc:  # pragma: no cover
             raise KeyError(f"模板 {category} 未定义") from exc
 
+        data = yaml.safe_load(content) or {}
         return TemplateDefinition(
             title=data.get("title", "精选好物"),
-            body=data.get("body", "默认文案模板，后续补写具体内容。"),
+            body=data.get("body", "默认文案模板，后续补充详细描述。"),
         )
 
 

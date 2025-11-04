@@ -1,4 +1,5 @@
-﻿"""中央厨房流水线。"""
+"""中央厨房流水线入口。"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,7 +11,7 @@ from core.pipeline.scanner import InputScanner
 from core.pipeline.style_processor import StyleProcessor
 from core.text.generator import CopywritingGenerator
 from core.text.ollama_client import OllamaClient
-from core.text.templates import TemplateRepository
+from core.text.template_repository import TemplateRepository
 from core.watermark.processor import WatermarkProcessor
 
 
@@ -21,6 +22,8 @@ class PipelineResult:
 
 
 class CentralPipeline:
+    """串联中央厨房的各个处理步骤。"""
+
     def __init__(self, config: CentralKitchenConfig) -> None:
         self.config = config
         template_repo = TemplateRepository()
@@ -37,7 +40,7 @@ class CentralPipeline:
         for raw in self.scanner.scan():
             try:
                 entries.append(self.processor.process(raw))
-            except Exception as exc:  # pragma: no cover
+            except Exception as exc:  # pragma: no cover - 记录错误并继续
                 failures.append(f"{raw.style_code}: {exc}")
         batches = self.partitioner.partition(entries)
         self.partitioner.export(batches)
