@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 
+from datetime import datetime
 from pathlib import Path
 
 from PySide6.QtCore import Qt
@@ -39,6 +40,9 @@ class PipelinePanel(QWidget):
         super().__init__()
         self.status_bar = status_bar
         self.viewmodel = viewmodel or PipelineViewModel()
+        self.log_dir = Path.cwd() / "logs" / "desktop"
+        self.log_dir.mkdir(parents=True, exist_ok=True)
+        self.log_file = self.log_dir / "pipeline_panel.log"
         self._init_ui()
         self._wire_signals()
         add_panel_header(self, PRIMARY)
@@ -148,9 +152,16 @@ class PipelinePanel(QWidget):
             target.setText(path)
 
     def _append_log(self, text: str) -> None:
-        self.log_view.append(text)
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        formatted = f"[{timestamp}] {text}"
+        self.log_view.append(formatted)
         if self.status_bar:
             self.status_bar.showMessage(text, 5000)
+        self._write_log(formatted)
+
+    def _write_log(self, line: str) -> None:
+        with self.log_file.open("a", encoding="utf-8") as handle:
+            handle.write(line + "\n")
 
     def _checked_devices(self) -> tuple[str, ...]:
         devices: list[str] = []
@@ -181,10 +192,16 @@ class PipelinePanel(QWidget):
     def _on_finished(self, bundles) -> None:
         self.start_btn.setEnabled(True)
         self.progress.setValue(100)
-        self._append_log("中央厨房任务完成")
-        self.current_label.setText("生成完成")
+        self._append_log("Pipeline completed")
+        self.current_label.setText("Pipeline finished")
 
     def _on_failed(self, message: str) -> None:
         self.start_btn.setEnabled(True)
-        self._append_log(f"错误：{message}")
+        self._append_log(f"Pipeline failed: {message}")
         self.current_label.setText(message)
+
+    def show_batch_details(self, batch_name: str) -> None:
+        if not batch_name:
+            return
+        self.current_label.setText(f"View batch: {batch_name}")
+        self._append_log(f"View batch details: {batch_name}")

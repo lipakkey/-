@@ -17,6 +17,7 @@ class SyncViewModel(QObject):
         super().__init__()
         self.controller = controller or SyncController(self)
         self._last_scan: list[ScannedDevice] = []
+        self._last_status: dict = {}
 
     def register_bundles(self, bundles) -> None:
         queued = self.controller.register_batches(bundles)
@@ -30,6 +31,7 @@ class SyncViewModel(QObject):
 
     def refresh_status(self) -> None:
         status = self.controller.load_status()
+        self._last_status = status
         self.status_changed.emit(status)
 
     def scan_devices(self) -> None:
@@ -46,6 +48,9 @@ class SyncViewModel(QObject):
 
     def last_scanned_devices(self) -> list[ScannedDevice]:
         return list(self._last_scan)
+
+    def last_status(self) -> dict:
+        return dict(self._last_status)
 
     def on_message(self, text: str) -> None:
         self.sync_message.emit(text)

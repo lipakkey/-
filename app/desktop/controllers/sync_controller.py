@@ -48,6 +48,9 @@ class SyncController:
     def configured_devices(self):
         return self.sync_service.list_devices()
 
+    def current_status(self) -> dict:
+        return self.sync_service.load_status()
+
     def scan_devices(self) -> list[ScannedDevice]:
         devices = self.device_scanner.scan()
         return devices

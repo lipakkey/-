@@ -98,6 +98,7 @@ class MainWindow(QMainWindow):
         self.sync_panel.viewmodel.scan_completed.connect(self._update_nav_devices)
         self.scan_nav_btn.clicked.connect(self.sync_panel.viewmodel.scan_devices)
         self.refresh_nav_btn.clicked.connect(self.sync_panel.viewmodel.refresh_status)
+        self.queue_list.itemSelectionChanged.connect(self._on_queue_selected)
 
     def _populate_initial_devices(self) -> None:
         devices = self.sync_panel.viewmodel.configured_devices()
@@ -123,4 +124,15 @@ class MainWindow(QMainWindow):
             for device_id, count in snapshot.items():
                 item = QListWidgetItem(f"{device_id}: 待推送 {count}")
                 self.queue_list.addItem(item)
+        if self.queue_list.count():
+            self.queue_list.setCurrentRow(0)
+            self._on_queue_selected()
+        else:
+            self.pipeline_panel.show_batch_details("")
+
+
+    def _on_queue_selected(self) -> None:
+        item = self.queue_list.currentItem()
+        if item is not None:
+            self.pipeline_panel.show_batch_details(item.text())
 
