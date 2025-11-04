@@ -1,10 +1,11 @@
-﻿"""中央厨房报告聚合。"""
+"""中央厨房报告聚合模块。"""
+
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Sequence
 
 from core.config.models import ManifestEntry
 from core.pipeline import PipelineResult
@@ -14,8 +15,8 @@ from core.pipeline import PipelineResult
 class DeliveryStats:
     total: int
     failures: Sequence[str]
-    per_device: Dict[str, int]
-    sensitive_hits: Dict[str, Sequence[str]]
+    per_device: dict[str, int]
+    sensitive_hits: dict[str, Sequence[str]]
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -42,9 +43,7 @@ class ReportBuilder:
         output_dir.mkdir(parents=True, exist_ok=True)
         report_path = output_dir / "delivery_report.json"
         report = self.build(result)
-        report_path.write_text(
-            json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         return report_path
 
     def _aggregate(
@@ -55,32 +54,53 @@ class ReportBuilder:
         for entry in entries:
             if entry.device_id:
                 per_device[entry.device_id] = per_device.get(entry.device_id, 0) + 1
-            manifest_path = entry.output_dir / "manifest.json"
-            if not manifest_path.exists():
+
+            meta_path = entry.output_dir / "manifest.json"
+            if not meta_path.exists():
                 continue
-            data = json.loads(manifest_path.read_text(encoding="utf-8"))
+            data = json.loads(meta_path.read_text(encoding="utf-8"))
             for word in data.get("sensitive_hits", []):
                 hits.setdefault(word, set()).add(entry.style_code)
+
         return DeliveryStats(
             total=len(entries),
             failures=failures,
             per_device=dict(sorted(per_device.items())),
-            sensitive_hits={
-                word: tuple(sorted(styles)) for word, styles in sorted(hits.items())
-            },
+            sensitive_hits={word: tuple(sorted(styles)) for word, styles in sorted(hits.items())},
         )
 
     def _manifest_info(self, entry: ManifestEntry) -> dict[str, object]:
+        meta_path = entry.output_dir / "manifest.json"
+        meta_data: dict[str, object] = {}
+        if meta_path.exists():
+            meta_data = json.loads(meta_path.read_text(encoding="utf-8"))
+
+        macro_min, macro_max = entry.macro_delay_range
+
         return {
             "style_code": entry.style_code,
             "device_id": entry.device_id,
-            "price": entry.price,
-            "macro_delay": entry.macro_delay_min,
-            "title_file": str(entry.title_file),
-            "description_files": [str(path) for path in entry.description_files],
-            "image_files": [str(path) for path in entry.image_files],
+            "pricing": {
+                "price": entry.price,
+                "stock_per_variant": entry.stock_per_variant
+                if entry.stock_per_variant is not None
+                else meta_data.get("stock_per_variant"),
+                "macro_delay": {"min": macro_min, "max": macro_max},
+            },
+            "paths": {
+                "title": str(entry.title_file),
+                "descriptions": [str(path) for path in entry.description_files],
+                "manifest": str(meta_path),
+            },
+            "media": {
+                "primary": [str(path) for path in entry.primary_images],
+                "variants": {
+                    color: [str(path) for path in images]
+                    for color, images in entry.variant_images.items()
+                },
+            },
+            "sensitive_hits": meta_data.get("sensitive_hits", []),
         }
 
 
 __all__ = ["ReportBuilder", "DeliveryStats"]
-

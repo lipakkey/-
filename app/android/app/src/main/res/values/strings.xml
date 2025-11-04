@@ -1,0 +1,10 @@
+﻿<resources>
+    <string name='app_name'>电子衣柜执行器</string>
+    <string name='main_title'>任务控制台</string>
+    <string name='main_status_idle'>当前状态：闲置</string>
+    <string name='main_status_running'>当前状态：执行中</string>
+    <string name='main_action_start'>开始任务</string>
+    <string name='main_action_stop'>停止任务</string>
+    <string name='main_logs_placeholder'>日志输出将在这里显示</string>
+</resources>
+

@@ -6,14 +6,16 @@ Usage examples:
     python scripts/run_demo.py
     python scripts/run_demo.py --input data/demo_input/Input_Raw --output data/demo_output --no-run
 """
+
 from __future__ import annotations
 
 import argparse
 import json
 import subprocess
 import sys
+from collections.abc import Iterable, Sequence
 from pathlib import Path
-from typing import Any, Dict, Iterable, Sequence
+from typing import Any
 
 import yaml
 from PIL import Image, ImageDraw, ImageFont
@@ -33,8 +35,7 @@ DEFAULT_STYLES: list[dict[str, Any]] = [
     {
         "style_code": "STYLE_B",
         "description": (
-            "Chrome Hearts 经典系列，烫钻工艺，背后字母印花。"
-            "320 克重磅面料，做工精细，质感出众。"
+            "Chrome Hearts 经典系列，烫钻工艺，背后字母印花。320 克重磅面料，做工精细，质感出众。"
         ),
         "price": 329.0,
         "colors": ["黑色", "水洗灰", "咖啡色"],
@@ -44,8 +45,7 @@ DEFAULT_STYLES: list[dict[str, Any]] = [
     {
         "style_code": "STYLE_C",
         "description": (
-            "秋冬潮流推荐款，牛仔面料拼接设计，宽松休闲版型。"
-            "男女皆宜，搭配百搭，支持尺码咨询。"
+            "秋冬潮流推荐款，牛仔面料拼接设计，宽松休闲版型。男女皆宜，搭配百搭，支持尺码咨询。"
         ),
         "price": 309.0,
         "colors": ["靛蓝", "浅蓝"],
@@ -87,7 +87,9 @@ def write_meta(style: dict[str, Any], style_path: Path) -> None:
         "stock": style.get("stock", 50),
         "macro_delay": style.get("macro_delay", [10, 45]),
     }
-    (style_path / "meta.yaml").write_text(yaml.safe_dump(meta, allow_unicode=True), encoding="utf-8")
+    (style_path / "meta.yaml").write_text(
+        yaml.safe_dump(meta, allow_unicode=True), encoding="utf-8"
+    )
 
 
 def create_style(style: dict[str, Any], root: Path) -> None:
@@ -191,7 +193,9 @@ def main() -> int:
         if len(devices) != 3:
             raise ValueError("必须提供 3 个设备 ID，例如 device1,device2,device3")
         price_override = args.price if args.price is not None else None
-        run_pipeline(input_root, output_root, devices, price_override, args.category, args.watermark)
+        run_pipeline(
+            input_root, output_root, devices, price_override, args.category, args.watermark
+        )
         print(f">> 中央厨房示例输出位于 {output_root}")
     else:
         print(">> 已生成素材，未执行中央厨房（--no-run）")

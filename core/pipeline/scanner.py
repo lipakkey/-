@@ -1,10 +1,11 @@
-﻿"""素材扫描器。"""
+"""素材扫描器。"""
+
 from __future__ import annotations
 
 import json
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Iterator
 
 from core.config.models import StyleMeta
 

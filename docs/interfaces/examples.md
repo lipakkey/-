@@ -1,43 +1,145 @@
-# Ê¾ÀıÊä³ö½â¶Á
+ï»¿# Ê¾ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Êºï¿½
 
-## 1. Ê¾ÀıÈÎÎñ¸ÅÀÀ
-ÔËĞĞ `python scripts/run_demo.py --price 299` ºó£¬`data/demo_output/` »áÉú³ÉÈı¸öÅú´ÎºÍ±¨¸æ£º
+## 1. Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¿Â¼
+Ö´ï¿½ï¿½ `python scripts/run_demo.py --price 299` ï¿½ï¿½ `data/demo_output/` ï¿½Ú½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½İºÍ±ï¿½ï¿½ï¿½
 
 - `Output_Batch_Phone_1/`
 - `Output_Batch_Phone_2/`
 - `Output_Batch_Phone_3/`
 - `reports/delivery_report.json`
 
-Ê¾Àı±¨¸æ£¨½ØÈ¡£©£º
+## 2. batch_manifest.json ï¿½ï¿½ï¿½á¹¹
+Ã¿ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `batch_manifest.json` ï¿½ï¿½Ã¿ï¿½ï¿½ entry ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½:
+
+```json
+{
+  "style_code": "STYLE_A",
+  "paths": {
+    "root": "STYLE_A",
+    "title": "STYLE_A/text/title.txt",
+    "descriptions": [
+      "STYLE_A/text/description_1.txt",
+      "STYLE_A/text/description_2.txt",
+      "STYLE_A/text/description_3.txt"
+    ],
+    "meta": "STYLE_A/manifest.json"
+  },
+  "media": {
+    "primary": [
+      "STYLE_A/images/main_1.jpg",
+      "STYLE_A/images/main_2.jpg"
+    ],
+    "variants": [
+      {
+        "name": "ç™½è‰²",
+        "images": ["STYLE_A/images/color_ç™½è‰²_1.jpg"]
+      },
+      {
+        "name": "é»‘è‰²",
+        "images": ["STYLE_A/images/color_é»‘è‰²_1.jpg"]
+      }
+    ]
+  },
+  "pricing": {
+    "price": 299.0,
+    "stock_per_variant": 50,
+    "macro_delay": { "min": 10, "max": 45 }
+  },
+  "flags": {
+    "sensitive_hits": [],
+    "needs_manual_review": false
+  }
+}
+```
+
+> Â· `paths.*` ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Í¼Æ¬ï¿½ï¿½É¨ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ 
+> Â· `media.primary` Îªï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ï£ï¿½`variants` ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½É«/ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ğ±ï¿½ï¿½ 
+> Â· `pricing.macro_delay` ï¿½ï¿½ min/max Ê±ï¿½ä£¬ï¿½ï¿½Î§ï¿½ï¿½ï¿½ï¿½ Stage3 ï¿½å®è§‚ä¼‘çœ ï¿½ï¿½
+
+## 3. manifest.json (staging/STYLE_X/manifest.json)
+ï¿½ï¿½ï¿½Òªï¿½ï¿½ Stage3 ï¿½ï¿½È¡Ô­Ê¼ context ï¿½ï¿½æ•æ„Ÿè¯ï¼Œstaging ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ style ï¿½ï¿½ï¿½ï¿½ manifest.json ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½
+
+```json
+{
+  "style_code": "STYLE_A",
+  "context": {
+    "colors": "é»‘è‰², ç™½è‰²",
+    "sizes": "S, M, L, XL"
+  },
+  "sensitive_hits": [],
+  "price": 299.0,
+  "stock_per_variant": 50,
+  "macro_delay": { "min": 10, "max": 45 },
+  "media": {
+    "primary": ["main_1.jpg", "main_2.jpg"],
+    "variants": [
+      {"name": "ç™½è‰²", "images": ["color_ç™½è‰²_1.jpg"]}
+    ]
+  }
+}
+```
+
+## 4. delivery_report.json ï¿½ï¿½ï¿½Ô±ß¿ï¿½ï¿½ï¿½
+`delivery_report.json` ï¿½ï¿½ `summary` + `entries` ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½è±¸Í³ï¿½ï¿½ï¿½ï¿½æ•æ„Ÿè¯å‘½ï¿½Ğ£ï¿½
+
 ```json
 {
   "summary": {
     "total": 4,
     "success": 4,
     "failures": [],
-    "per_device": {},
+    "per_device": {"phone1": 2, "phone2": 2},
     "sensitive_hits": {}
   },
-  "entries": [ { ... } ]
+  "entries": [
+    {
+      "style_code": "STYLE_A",
+      "device_id": "phone1",
+      "pricing": {
+        "price": 299.0,
+        "stock_per_variant": 50,
+        "macro_delay": {"min": 10, "max": 45}
+      },
+      "paths": {
+        "title": ".../STYLE_A/text/title.txt",
+        "descriptions": [".../description_1.txt", "..."],
+        "manifest": ".../STYLE_A/manifest.json"
+      },
+      "media": {
+        "primary": [".../images/main_1.jpg"],
+        "variants": {"ç™½è‰²": ["...color_ç™½è‰²_1.jpg"]}
+      },
+      "sensitive_hits": []
+    }
+  ]
 }
 ```
-ËµÃ÷£º
-- `total`/`success`£ºÉú³ÉµÄ×ÜÈÎÎñÊıÓë³É¹¦Êı¡£
-- `per_device`£ºÊ¾ÀıÎ´Ö¸¶¨Éè±¸ ID£¬Êµ¼ÊÔËĞĞÊ±»á°´Éè±¸Í³¼Æ¡£
-- `sensitive_hits`£ºÊ¾ÀıÎ´´¥·¢Ãô¸Ğ´Ê£¬Êµ¼ÊÈôÃüÖĞ»áÁĞ³ö´ÊÌõÓë¿îºÅ¡£
 
-## 2. entries ×Ö¶ÎËµÃ÷
-ÒÔµ¥Ìõ¼ÇÂ¼ÎªÀı£º
-- `style_code`£º¿îºÅ£¬Èç `STYLE_A`¡£
-- `device_id`£º·ÖÅäµÄÉè±¸ ID£¨Ê¾ÀıÎª¿Õ£©¡£
-- `price`£º×îÖÕ¼Û¸ñ£¬ÈôÆôÓÃËæ»úÎ²Êı»áÌåÏÖÔÚ´Ë¡£
-- `macro_delay`£ºÈÎÎñ¼äºê¹ÛĞİÃßÇø¼ä£¨·ÖÖÓ£©¡£
-- `title_file`£º±êÌâÎÄ±¾Â·¾¶£¬Éè±¸Ğè¶ÁÈ¡¡£
-- `description_files`£ºÃèÊöÎÄ±¾ÁĞ±í£¬ÓÃÓÚÌîÈë·¢²¼Ò³¡£
-- `image_files`£ºË®Ó¡ºóµÄÍ¼Æ¬Â·¾¶£¬È·±£Éè±¸¿É·ÃÎÊ¡£
+## 5. result.json (å®‰å“å›ä¼ )
+å®‰å“æ‰§è¡Œå™¨æ¯å®Œæˆä¸€æ¬¾ä¼šåœ¨ `Done/<style>/result.json` å†™å…¥ï¼š
 
-## 3. Ãô¸Ğ´ÊĞ£Ñé
-Ê¾ÀıÖĞÎ´´¥·¢Ãô¸Ğ´Ê¡£Èç¹ûĞèÑéÖ¤£¬¿ÉÔÚ `SensitiveDictionary` ÖĞ¼ÓÈë´ÊÌõ²¢ĞŞ¸Ä `desc.txt`£¬ÔËĞĞºóÔÚ `delivery_report.json` µÄ `summary.sensitive_hits` ÖĞ»á³öÏÖ¼ÇÂ¼¡£
+```json
+{
+  "style_code": "STYLE_A",
+  "batch_id": "phone1-01-20251104165030",
+  "device_id": "phone1",
+  "status": "success",
+  "error_code": null,
+  "retry_count": 0,
+  "published_at": "2025-11-04T17:12:03+08:00",
+  "duration_ms": 153245,
+  "screenshots": ["/sdcard/XianyuTasks/Done/STYLE_A/success.png"],
+  "source_paths": {...ä¸ batch_manifest ç›¸åŒ...},
+  "pricing": {...},
+  "media": {...}
+}
+```
 
-## 4. ÇåÀí
-Ê¹ÓÃÊ¾Àıºó£¬¿ÉÉ¾³ı `data/demo_input/` Óë `data/demo_output/`£¬»òÖØĞÂÔËĞĞ½Å±¾¸²¸Ç¡£
+æ¡Œé¢ç«¯æ‹‰å– `result.json` ï¿½ï¿½ `session.log` ï¿½ï¿½ï¿½ï¿½ï¿½Ú»ï¿½Øµï¿½ï¿½ï¿½ Stage1 delivery_report.json ï¿½Ğ²É¼ï¿½Ô­ï¿½ò¡£µï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½+æˆªå›¾Î»ï¿½Ã£ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½Ö¶Î¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+## 6. scripts
+- `scripts/validate_manifest.py`ï¼šĞ£ï¿½ï¿½ batch_manifest.json / delivery_report.json ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¶Î¡ï¿½
+- `scripts/report_summary.py`ï¼šå¿«è¯» summaryï¼Œå±•ç¤º per_deviceã€‚
+- `scripts/copy_batch.py`ï¼šæ‹·è´æŒ‡å®šæ‰¹æ¬¡åˆ°ç›®æ ‡ç›®å½•ï¼ˆä¾‹å¦‚ ADB æŒ‚è½½ç‚¹ï¼‰ã€‚
+
+ï¿½ï¿½Ç°ç¤ºä¾‹ï¿½ï¿½ï¿½ï¿½ `data/demo_output/` ï¿½ï¿½×ªï¿½ï¿½ï¿½Í»Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ `python scripts/run_demo.py --no-run` ï¿½ï¿½ï¿½ï¿½Ú±à¼­ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½á¹¹ï¿½ï¿½

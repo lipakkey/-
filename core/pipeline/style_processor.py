@@ -1,15 +1,14 @@
-﻿"""单款处理器：文案 + 水印 + 元数据。"""
+"""单款处理器：文案 + 水印 + 元数据。"""
+
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Mapping
 
 from core.config.models import (
     CentralKitchenConfig,
     ManifestEntry,
-    PriceConfig,
     StyleMeta,
 )
 from core.pipeline.scanner import RawStyle
@@ -44,35 +43,55 @@ class StyleProcessor:
             file_path.write_text(body, encoding="utf-8")
             description_files.append(file_path)
 
+        primary_images: list = []
+        variant_map: dict[str, list] = {}
         for image_path in raw.images:
             output_image = image_dir / image_path.name
             self.watermarker.apply_to(image_path, output_image)
+            stem = image_path.stem
+            if stem.startswith("color_"):
+                parts = stem.split("_", 2)
+                color = parts[1] if len(parts) > 1 else "默认"
+                variant_map.setdefault(color, []).append(output_image)
+            else:
+                primary_images.append(output_image)
 
+        stock = self._resolve_stock(raw)
+        macro_delay = (
+            raw.meta.macro_delay_override if raw.meta else self.config.delays.macro_delay_min
+        )
+        manifest_payload = {
+            "style_code": raw.style_code,
+            "context": context,
+            "sensitive_hits": copy_result.sensitive_hits,
+            "price": price,
+            "stock_per_variant": stock,
+            "macro_delay": {"min": macro_delay[0], "max": macro_delay[1]},
+            "media": {
+                "primary": [img.name for img in primary_images],
+                "variants": [
+                    {"name": color, "images": [img.name for img in sorted(paths)]}
+                    for color, paths in sorted(variant_map.items())
+                ],
+            },
+        }
         manifest_path = style_dir / "manifest.json"
         manifest_path.write_text(
-            json.dumps(
-                {
-                    "style_code": raw.style_code,
-                    "context": context,
-                    "sensitive_hits": copy_result.sensitive_hits,
-                },
-                ensure_ascii=False,
-                indent=2,
-            ),
+            json.dumps(manifest_payload, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
 
-        price = self._resolve_price(raw, context)
-        macro_delay = raw.meta.macro_delay_override if raw.meta else self.config.delays.macro_delay_min
         return ManifestEntry(
             style_code=raw.style_code,
             device_id="",
             output_dir=style_dir,
             title_file=title_file,
             description_files=tuple(description_files),
-            image_files=tuple(sorted(image_dir.glob("*"))),
+            primary_images=tuple(primary_images),
+            variant_images={color: tuple(sorted(paths)) for color, paths in variant_map.items()},
             price=price,
-            macro_delay_min=macro_delay,
+            stock_per_variant=stock,
+            macro_delay_range=macro_delay,
         )
 
     def _build_context(self, raw: RawStyle) -> Mapping[str, str]:
@@ -96,6 +115,11 @@ class StyleProcessor:
         if raw.meta and raw.meta.price_override is not None:
             return raw.meta.price_override
         return self.config.price.derive_price()
+
+    def _resolve_stock(self, raw: RawStyle) -> int | None:
+        if raw.meta and raw.meta.stock_per_variant is not None:
+            return int(raw.meta.stock_per_variant)
+        return None
 
 
 __all__ = ["StyleProcessor"]

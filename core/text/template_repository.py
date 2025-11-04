@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from importlib import resources
-from typing import Any, Dict, Iterable
+from typing import Any
 
 import yaml
 
@@ -39,7 +39,7 @@ class TemplateRepository:
             raise KeyError(f"模板 {category} 未定义") from exc
 
         raw_data = yaml.safe_load(content)
-        data: Dict[str, Any] = {}
+        data: dict[str, Any] = {}
         if isinstance(raw_data, dict):
             data = {str(key): value for key, value in raw_data.items()}
 

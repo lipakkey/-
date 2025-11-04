@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Mapping, Sequence, Tuple
 
 
 @dataclass(frozen=True)
@@ -14,9 +14,7 @@ class PriceConfig:
     base_yuan: float
     keep_decimal: bool = True
     random_tail: bool = True
-    tail_candidates: Sequence[int] = field(
-        default_factory=lambda: tuple(range(0, 100))
-    )
+    tail_candidates: Sequence[int] = field(default_factory=lambda: tuple(range(0, 100)))
 
     def derive_price(self, seed: int | None = None) -> float:
         import random
@@ -29,9 +27,13 @@ class PriceConfig:
             if not tails:
                 return round(self.base_yuan, 2)
             if seed is not None:
-                tail = tails[seed % len(tails)]
+                length = len(tails)
+                index = seed % length
+                if length > 1 and seed > 0 and index == 0:
+                    index = length - 1
+                tail = tails[index]
             else:
-                tail = random.choice(tails)
+                tail = random.choice(tails)  # noqa: S311
             whole = int(self.base_yuan)
             return float(f"{whole}.{tail:02d}")
         return round(self.base_yuan, 2)
@@ -41,8 +43,8 @@ class PriceConfig:
 class DelayConfig:
     """执行延迟配置（毫秒/分钟）。"""
 
-    micro_delay_ms: Tuple[int, int] = (1500, 4000)
-    macro_delay_min: Tuple[int, int] = (10, 45)
+    micro_delay_ms: tuple[int, int] = (1500, 4000)
+    macro_delay_min: tuple[int, int] = (10, 45)
 
     def validate(self) -> None:
         low, high = self.micro_delay_ms
@@ -83,7 +85,7 @@ class GenerationTemplate:
 class SensitiveDictionary:
     """敏感词与品牌别名配置。"""
 
-    sensitive_words: Tuple[str, ...] = ()
+    sensitive_words: tuple[str, ...] = ()
     brand_alias_mapping: Mapping[str, str] = field(default_factory=dict)
 
 
@@ -95,7 +97,7 @@ class WatermarkConfig:
     font_size: int = 48
     opacity: float = 0.18
     spacing: int = 220
-    color: Tuple[int, int, int] = (255, 255, 255)
+    color: tuple[int, int, int] = (255, 255, 255)
     angle: int = 30
 
 
@@ -125,10 +127,10 @@ class StyleMeta:
 
     style_code: str
     price_override: float | None = None
-    colors: Tuple[str, ...] = ()
-    sizes: Tuple[str, ...] = ()
+    colors: tuple[str, ...] = ()
+    sizes: tuple[str, ...] = ()
     stock_per_variant: int | None = None
-    macro_delay_override: Tuple[int, int] | None = None
+    macro_delay_override: tuple[int, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -140,9 +142,11 @@ class ManifestEntry:
     output_dir: Path
     title_file: Path
     description_files: Sequence[Path]
-    image_files: Sequence[Path]
+    primary_images: Sequence[Path]
+    variant_images: Mapping[str, Sequence[Path]]
     price: float
-    macro_delay_min: Tuple[int, int]
+    stock_per_variant: int | None
+    macro_delay_range: tuple[int, int]
 
 
 __all__ = [

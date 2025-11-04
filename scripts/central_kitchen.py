@@ -37,12 +37,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--category",
         default="tee",
-        help="文案模板品类（默认 tee）",
+        help="文案模板品类（默认为 tee）",
     )
     parser.add_argument(
         "--watermark",
         default="电子衣柜",
-        help="水印文字（默认 电子衣柜）",
+        help="水印文字（默认为 电子衣柜）",
     )
     parser.add_argument(
         "--report-dir",

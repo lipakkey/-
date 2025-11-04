@@ -1,5 +1,6 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """本地一键检查脚本：ruff、mypy、pytest。"""
+
 from __future__ import annotations
 
 import subprocess

@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any
 
 from core.config.models import GenerationTemplate, SensitiveDictionary
 from core.text.ollama_client import OllamaClient
@@ -70,9 +71,13 @@ class CopywritingGenerator:
         if fake_template:
             return fake_template.format(**{**context, "variation": index})
         try:
-            return self.ollama.generate(model=model, prompt=prompt)
+            response = self.ollama.generate(model=model, prompt=prompt)
         except RuntimeError:
             return self._fallback_body(context)
+        sanitized = response.strip()
+        if not sanitized or sanitized in {"兜底响应", "FALLBACK"}:
+            return self._fallback_body(context)
+        return response
 
     def _build_prompt(
         self,

@@ -1,9 +1,9 @@
-﻿"""图片水印处理。"""
+"""图片水印处理。"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from PIL import Image, ImageDraw, ImageFont
 

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence
 
 from core.config.models import CentralKitchenConfig, ManifestEntry
 from core.pipeline.partitioner import TaskPartitioner
@@ -44,7 +44,8 @@ class CentralPipeline:
                 failures.append(f"{raw.style_code}: {exc}")
         batches = self.partitioner.partition(entries)
         self.partitioner.export(batches)
-        return PipelineResult(entries=tuple(entries), failures=tuple(failures))
+        assigned_entries = [entry for batch in batches for entry in batch.entries]
+        return PipelineResult(entries=tuple(assigned_entries), failures=tuple(failures))
 
 
 __all__ = ["CentralPipeline", "PipelineResult"]
