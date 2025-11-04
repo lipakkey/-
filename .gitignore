@@ -1,0 +1,94 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.build/
+.venv/
+venv/
+.env
+.env.*
+.envrc
+pip-wheel-metadata/
+.eggs/
+*.egg-info/
+*.egg
+build/
+dist/
+*.log
+.coverage*
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.pyre/
+.pytype/
+.tox/
+pytestdebug.log
+
+# Editors / OS
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.code-workspace
+
+# Node / Web (可能用于桌面前端)
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Android / Gradle
+app/android/.gradle/
+app/android/build/
+app/android/local.properties
+*.iml
+.gradle/
+*.apk
+*.ap_ 
+*.dex
+*.class
+captures/
+android/.cxx/
+
+# Qt / PySide
+app/desktop/__pycache__/
+app/desktop/build/
+app/desktop/dist/
+app/desktop/*.spec
+
+# Data / Models / Archives
+archives/
+models/
+model_cache/
+ollama/
+*.bin
+*.ckpt
+*.onnx
+*.pt
+
+# Task packages & logs
+output/
+logs/
+reports/
+sync/
+
+# Temporary
+.DS_Store
+*.tmp
+*.temp
+~$*
+
+# Git bundle / backup (会在 archives 中归档)
+*.bundle
+
+# Ignore data & tools unless explicitly tracked
+/data/
+/tools/
+!/tools/README.md
+!/data/README.md
+

@@ -1,0 +1,78 @@
+﻿[project]
+name = "electronic-wardrobe"
+version = "0.1.0"
+description = "中央厨房 + 安卓执行器的闲鱼服装自动上架系统"
+authors = [
+  { name = "Electronic Wardrobe Team" }
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = []
+
+[project.optional-dependencies]
+desktop = []
+android = []
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.23",
+  "pytest-cov>=5.0",
+  "coverage>=7.6",
+  "mypy>=1.11",
+  "ruff>=0.7.0",
+  "black>=24.8",
+  "isort>=5.13",
+  "pre-commit>=3.8"
+]
+
+[tool.uv]
+index-strategy = "prefer-binary"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "B", "TID", "UP", "N", "ASYNC", "S"]
+ignore = ["E203", "E501"]
+exclude = [
+  "app/android",
+  "app/desktop/build",
+  "app/desktop/dist",
+  "tests/fixtures"
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+show_error_codes = true
+pretty = true
+ignore_missing_imports = true
+namespace_packages = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-markers --strict-config"
+testpaths = ["tests"]
+markers = [
+  "slow: 长耗时测试",
+  "integration: 端到端或跨模块测试",
+  "android: 需要真实或模拟安卓环境"
+]
+
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
