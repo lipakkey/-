@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from importlib import resources
+from typing import Any, Dict, Iterable
 
 import yaml
 
@@ -37,11 +38,14 @@ class TemplateRepository:
         except FileNotFoundError as exc:  # pragma: no cover
             raise KeyError(f"模板 {category} 未定义") from exc
 
-        data = yaml.safe_load(content) or {}
-        return TemplateDefinition(
-            title=data.get("title", "精选好物"),
-            body=data.get("body", "默认文案模板，后续补充详细描述。"),
-        )
+        raw_data = yaml.safe_load(content)
+        data: Dict[str, Any] = {}
+        if isinstance(raw_data, dict):
+            data = {str(key): value for key, value in raw_data.items()}
+
+        title = str(data.get("title", "精选好物"))
+        body = str(data.get("body", "默认文案模板，后续补充详细描述。"))
+        return TemplateDefinition(title=str(title), body=str(body))
 
 
 __all__ = ["TemplateRepository", "TemplateDefinition"]
