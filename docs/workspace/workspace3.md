@@ -1,24 +1,28 @@
-﻿# 工作区3日志
+# Workspace3 日志（Stage 3 安卓执行器）
 
-## 今日进度（Stage3 - 安卓执行器）
-- [x] 任务拆解并同步 board.md
-- [x] 更新 selectors_plan / state_machine 文档
-- [x] Kotlin 侧重新对齐 manifest/result 结构（TaskRepository、ResultWriter、TaskRunner、RootShell 等）
-- [ ] 补全 Accessibility 操作细节、控件映射
-- [ ] 细化日志与截图回传协议（docs/workspace/sync_contract.md 已初步更新）
+## 2025-11-04 20:30
 
-## 待办
-1. `AutomationAccessibilityService` + `AccessibilityBridge` 绑定真实控件（标题、描述、图库勾选、规格图片）。
-2. 根据安卓界面调试完善 `XianyuSelectors`，补充资源 ID / 备用定位。
-3. `TaskRunner` 中加入失败重试后的截图/控件树抓取逻辑。
-4. 桌面端同步服务读取 `result.json`，合并到 delivery_report.json。
-5. 记录三台设备序列号与昵称，补充至 `workspace3_devices.md`（未创建）。
+- 与 Workspace2 协调 manifest/result.json 字段，准备后续日志格式文档。
+- 待补：三台设备的序列号、设备昵称、用途说明。
 
-## 设备信息（待补充）
-- 小米 8 ×3，Android 10，已 Root。
-- 需记录：ADB 序列号、昵称、分配批次。
+## 2025-11-04 19:50
 
-## 风险/依赖
-- 无障碍节点定位需要真实 UI 录屏验证。
-- Root 命令（mv/screencap）需实测权限。
-- 桌面端仍待实现 LogSink 解析、报告合并。
+- 规划无障碍动作：节点定位策略、操作顺序（发布 > 填写规格 > 批量定价 > 发布）。
+- 标记待办：封装 AutomationAccessibilityService 行为、result.json 字段说明、日志格式与 Root 流程。
+
+## 2025-11-04 19:10
+
+- 完成 selectors_plan 与 state_machine 文档初稿。
+- 初始化 Gradle 工程与包结构：MainActivity、Logger、EnvDiagnostics、TaskRepository、ResultWriter、TaskStateMachine、TaskRunner、AutomationAccessibilityService。
+- 增补 RandomDelays、RootShell 等工具类。
+
+## 设备信息（待补）
+
+- 小米 8 ×3，Android 10，6 GB RAM / 64 GB ROM，Bootloader 解锁，Root 权限可用。
+- 需要录入：ADB 序列号、设备别名、绑定账号。
+
+## 风险 / 依赖
+
+- 无障碍与 Root 授权需真机验证。
+- 依赖 Stage2 同步模块输出的 manifest/result.json 最终格式。
+

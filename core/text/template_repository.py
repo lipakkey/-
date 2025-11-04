@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from importlib import resources
-from typing import Any
+from typing import Any, Mapping, cast
 
 import yaml
 
@@ -38,10 +38,13 @@ class TemplateRepository:
         except FileNotFoundError as exc:  # pragma: no cover
             raise KeyError(f"模板 {category} 未定义") from exc
 
-        raw_data = yaml.safe_load(content)
-        data: dict[str, Any] = {}
-        if isinstance(raw_data, dict):
-            data = {str(key): value for key, value in raw_data.items()}
+        raw_data: Any = yaml.safe_load(content)
+        data: dict[str, Any]
+        if isinstance(raw_data, Mapping):
+            typed_raw = cast(Mapping[Any, Any], raw_data)
+            data = {str(key): value for key, value in typed_raw.items()}
+        else:
+            data = {}
 
         title = str(data.get("title", "精选好物"))
         body = str(data.get("body", "默认文案模板，后续补充详细描述。"))

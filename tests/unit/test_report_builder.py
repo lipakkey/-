@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from typing import Any, cast
+
 from core.config.models import ManifestEntry
 from core.pipeline import PipelineResult
 from core.reporting.report_builder import ReportBuilder
@@ -31,17 +33,21 @@ def _entry(tmp_path: Path, style: str, device: str, hits: list[str]) -> Manifest
     )
 
 
-def test_report_builder_aggregate(tmp_path):
+def test_report_builder_aggregate(tmp_path: Path) -> None:
     entry1 = _entry(tmp_path, "STYLE_A", "device1", ["违禁"])
     entry2 = _entry(tmp_path, "STYLE_B", "device2", ["AMIRI"])
     result = PipelineResult(entries=(entry1, entry2), failures=())
     builder = ReportBuilder()
     report = builder.build(result)
-    assert report["summary"]["per_device"]["device1"] == 1
-    assert set(report["summary"]["sensitive_hits"].keys()) == {"违禁", "AMIRI"}
+    summary = cast(dict[str, Any], report["summary"])
+    per_device = cast(dict[str, Any], summary["per_device"])
+    hits = cast(dict[str, Any], summary["sensitive_hits"])
+
+    assert per_device["device1"] == 1
+    assert set(hits.keys()) == {"违禁", "AMIRI"}
 
 
-def test_report_builder_write(tmp_path):
+def test_report_builder_write(tmp_path: Path) -> None:
     entry = _entry(tmp_path, "STYLE_C", "device1", [])
     result = PipelineResult(entries=(entry,), failures=["STYLE_D: error"])
     builder = ReportBuilder()
