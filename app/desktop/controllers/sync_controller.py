@@ -8,15 +8,22 @@ from typing import Iterable
 from app.desktop.core.background import Worker
 from app.desktop.core.logger import get_logger
 from app.desktop.models.task_bundle import TaskBundle
+from app.desktop.services.device_scanner import DeviceScanner, ScannedDevice
 from app.desktop.services.sync_service import SyncService
 
 logger = get_logger("sync.controller")
 
 
 class SyncController:
-    def __init__(self, presenter, service: SyncService | None = None) -> None:
+    def __init__(
+        self,
+        presenter,
+        service: SyncService | None = None,
+        scanner: DeviceScanner | None = None,
+    ) -> None:
         self.presenter = presenter
         self.sync_service = service or SyncService(Path.cwd())
+        self.device_scanner = scanner or DeviceScanner()
         self._pending: dict[str, list[TaskBundle]] = {}
 
     # ------------------------------------------------------------------ 队列管理
@@ -37,6 +44,13 @@ class SyncController:
     def _write_queue_file(self, snapshot: dict[str, int]) -> None:
         pending_file = self.sync_service.sync_root / "queue.json"
         pending_file.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    def configured_devices(self):
+        return self.sync_service.list_devices()
+
+    def scan_devices(self) -> list[ScannedDevice]:
+        devices = self.device_scanner.scan()
+        return devices
 
     # ------------------------------------------------------------------ 执行操作
     def push_all(self) -> None:
