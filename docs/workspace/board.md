@@ -1,11 +1,11 @@
 # 工作区任务看板
 
-## 工作区 1（中央厨房核心 / Stage 1-C）
-- [x] 修复报告模块并确认可运行
-- [x] 自检 scripts/central_kitchen.py
-- [x] 运行 pytest 并记录日志
-- [x] 更新 docs/architecture.md 与 docs/workflow.md
-- [x] Stage 1-C 收尾：commit + push + bundle，并在 workspace1.md 记录
+## 工作区 1（中央厨房核心）
+- [x] 文档：接口说明、工作流图、README 更新
+- [x] 示例脚本：scripts/run_demo.py + 使用指南
+- [ ] 示例数据深化：整理示例清单、生成 demo_output 解读、补充敏感词校验记录
+- [ ] 测试增强：补齐 PriceConfig/DelayConfig 等单测（计划中）
+- [ ] 脚本工具：manifest 校验、批次复制、报告摘要脚本（计划中）
 
 ## 工作区 2（桌面端 UI/同步 / Stage 2 预研）
 - [ ] 梳理桌面端界面草图，写入 docs/ui/desktop_wireframe.md
