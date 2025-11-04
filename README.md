@@ -1,48 +1,73 @@
-ï»¿# ç”µå­è¡£æŸœ 1.0
+# µç×ÓÒÂ¹ñ 1.0
 
-è¿™æ˜¯ä¸€ä¸ªé¢å‘é—²é±¼å¤šè´¦å·æœè£…ä¸Šæž¶åœºæ™¯çš„â€œä¸­å¤®åŽ¨æˆ¿ + éš”ç¦»æ‰§è¡Œâ€ç³»ç»Ÿï¼ŒåŒ…å«ï¼š
+ÃæÏòÏÐÓã¶àÕËºÅ·þ×°ÉÏ¼Ü³¡¾°µÄ¡°ÖÐÑë³ø·¿ + ¸ôÀëÖ´ÐÐ¡±ÏµÍ³¡£
 
-- **ä¸­å¤®åŽ¨æˆ¿ï¼ˆWindows æ¡Œé¢ç«¯ï¼‰**ï¼šç´ æç®¡ç†ã€AI æ–‡æ¡ˆç”Ÿæˆã€æ°´å°ã€ä»»åŠ¡åˆ†å‘ã€æ—¥å¿—æ±‡æ€»ã€‚
-- **å®‰å“éš”ç¦»æ‰§è¡Œå™¨**ï¼šä¸‰å°ç‹¬ç«‹è®¾å¤‡è¯»å–æœ¬åœ°ä»»åŠ¡åŒ…ï¼Œé€šè¿‡æ— éšœç¢ + Root è‡ªåŠ¨åŒ–æ¨¡æ‹Ÿäººå·¥å‘å¸ƒã€‚
-- **è¿ç»´ä¿éšœ**ï¼šä»»åŠ¡æ‹†åˆ†ã€é£ŽæŽ§ç­–ç•¥ã€æ—¥å¿—ç•™å­˜ã€å¤‡ä»½ä¸Žå›žæº¯ã€‚
+- **ÖÐÑë³ø·¿£¨Windows ×ÀÃæ¶Ë£©**£ºËØ²Ä¹ÜÀí¡¢AI ÎÄ°¸Éú³É¡¢Ë®Ó¡¡¢ÈÎÎñ·Ö·¢¡¢±¨¸æ»ã×Ü¡£
+- **°²×¿¸ôÀëÖ´ÐÐÆ÷**£ºÈýÌ¨¶ÀÁ¢Éè±¸¶ÁÈ¡ÈÎÎñ°ü£¬Í¨¹ýÎÞÕÏ°­ + Root Ä£ÄâÈË¹¤²Ù×÷¡£
+- **ÔËÎ¬±£ÕÏ**£ºÈÎÎñ²ð·Ö¡¢·ç¿Ø²ßÂÔ¡¢ÈÕÖ¾Áô´æ¡¢±¸·ÝÓë»ØËÝ¡£
 
-## é˜¶æ®µè§„åˆ’
+## ½×¶Î¹æ»®
 
-| é˜¶æ®µ | ç›®æ ‡ | æ ¸å¿ƒäº¤ä»˜ |
-| --- | --- | --- |
-| Stage 0 | åŸºç¡€è®¾æ–½æ­å»º | ä»“åº“ç»“æž„ã€ä¾èµ–ç®¡ç†ã€è´¨é‡å·¥å…·ã€æ–‡æ¡£éª¨æž¶ |
-| Stage 1 | æ ¸å¿ƒç®¡çº¿ | ç´ æè§£æžã€AI æ–‡æ¡ˆã€æ•æ„Ÿè¯è¿‡æ»¤ã€ä»»åŠ¡æ‰“åŒ… |
-| Stage 2 | æ¡Œé¢åº”ç”¨ | PySide6 UIã€é…ç½®ç®¡ç†ã€ä»»åŠ¡æŽ¨é€ã€åŒæ­¥æ—¥å¿— |
-| Stage 3 | å›¾ç‰‡æ ‡æ³¨ | GUI æ ‡æ³¨å™¨ã€é¢œè‰²/è§„æ ¼æ˜ å°„ã€å¿«æ·å‘½ä»¤ |
-| Stage 4 | å®‰å“æ‰§è¡Œå™¨ | AccessibilityState Machineã€Root æ–‡ä»¶æ“ä½œã€å¤±è´¥å›žå†™ |
-| Stage 5 | è”è°ƒ | çœŸæœº/æ¨¡æ‹Ÿå™¨å›žå½’ã€ä¸‰è®¾å¤‡åŒæ­¥ã€å¼‚å¸¸åœºæ™¯éªŒè¯ |
-| Stage 6 | æ–‡æ¡£äº¤ä»˜ | æ“ä½œæ‰‹å†Œã€ç»´æŠ¤æŒ‡å—ã€é—®é¢˜æŽ’æŸ¥ã€æ‰“åŒ…è„šæœ¬ |
-| Stage 7 | éªŒæ”¶ | æµ‹è¯•çŸ©é˜µã€æ€§èƒ½è¯„ä¼°ã€é£ŽæŽ§å¤æ ¸ |
-| Stage 8 | è¿ç»´äº¤æŽ¥ | ç‰ˆæœ¬è§„èŒƒã€å¤‡ä»½ç­–ç•¥ã€æ¨¡åž‹æ›´æ–°æµç¨‹ |
+| ½×¶Î | Ä¿±ê | ½»¸¶ | ×´Ì¬ |
+| --- | --- | --- | --- |
+| Stage 0 | »ù´¡ÉèÊ© | ²Ö¿â½á¹¹¡¢ÒÀÀµ¹ÜÀí¡¢ÖÊÁ¿¹¤¾ß | ? Íê³É |
+| Stage 1 | ÖÐÑë³ø·¿ | ËØ²Ä½âÎö¡¢AI ÎÄ°¸¡¢Ë®Ó¡¡¢ÈÎÎñ´ò°ü | ? Íê³É |
+| Stage 2 | ×ÀÃæÓ¦ÓÃ | PySide6 UI¡¢Í¬²½¿ØÖÆ¡¢ÈÕÖ¾¿ÉÊÓ»¯ | ? ÔÝ»º |
+| Stage 3 | Í¼Æ¬±ê×¢ | GUI ±ê×¢Æ÷¡¢¿ì½Ý¼ü¡¢Ð£ÑéÌáÐÑ | ? |
+| Stage 4 | °²×¿Ö´ÐÐÆ÷ | ÎÞÕÏ°­Ö´ÐÐ¡¢Root ÎÄ¼þ²Ù×÷¡¢Ê§°Ü»ØÐ´ | ? |
+| Stage 5 | Áªµ÷ | ÈýÉè±¸Í¬²½¡¢Òì³£»Ø·Å¡¢ÈÕÖ¾¹éµµ | ? |
+| Stage 6 | ÎÄµµ½»¸¶ | ²Ù×÷ÊÖ²á¡¢Î¬»¤Ö¸ÄÏ¡¢´ò°ü½Å±¾ | ? |
+| Stage 7 | ÑéÊÕ | ²âÊÔ¾ØÕó¡¢·ç¿Ø¸´ºË¡¢ÐÔÄÜÆÀ¹À | ? |
+| Stage 8 | ÔËÎ¬½»½Ó | °æ±¾¹æ·¶¡¢±¸·Ý²ßÂÔ¡¢Ä£ÐÍ¸üÐÂÁ÷³Ì | ? |
 
-## è¿è¡ŒçŽ¯å¢ƒè¦æ±‚
+## ÔËÐÐ»·¾³
 
-- Windows 10/11ï¼ˆæ¡Œé¢ç«¯ä¸»çŽ¯å¢ƒï¼Œéœ€ç®¡ç†å‘˜æƒé™ã€æ”¯æŒ NVIDIA RTX 2070 + 32GB å†…å­˜ï¼‰ã€‚
-- Python 3.11ï¼ˆè§„åˆ’é€šè¿‡ `uv` ç»Ÿä¸€ç®¡ç†ä¾èµ–ï¼Œå…¼å®¹ `poetry` å¤‡ä»½æ–¹æ¡ˆï¼‰ã€‚
-- Ollama æœ¬åœ°å¤§æ¨¡åž‹ï¼ˆæ–‡æ¡ˆæ”¹å†™ã€æ•æ„Ÿè¯è¿‡æ»¤ï¼‰ã€‚
-- Android è®¾å¤‡ï¼šå°ç±³ 8 Ã—3ï¼ŒAndroid 10ï¼Œå·² Rootï¼Œæ”¯æŒæ— éšœç¢æœåŠ¡ã€‚
-- Git + PowerShell 7ï¼ˆæˆ– Windows Terminalï¼‰ç”¨äºŽé¡¹ç›®ç®¡ç†ã€‚
+- Windows 10/11£¨¹ÜÀíÔ±È¨ÏÞ£¬½¨Òé RTX 2070 / 32GB ÄÚ´æ£©
+- Python 3.11£¨ÍÆ¼ö uv Í³Ò»¹ÜÀí£¬¼æÈÝ poetry£©
+- Ollama ±¾µØÄ£ÐÍ£¨ÎÄ°¸¸ÄÐ´¡¢Ãô¸Ð´Ê¹ýÂË£©
+- Android Éè±¸£ºÐ¡Ã× 8 ¡Á3£¬Android 10£¬ÒÑ Root£¬¿ªÆôÎÞÕÏ°­
+- Git + PowerShell 7 / Windows Terminal
 
-## ç›®å½•æ€»è§ˆï¼ˆè§„åˆ’ï¼‰
+## Ä¿Â¼¸ÅÀÀ
 
-```
-ç”µå­è¡£æŸœ1.0/
-â”œâ”€â”€ app/              # æ¡Œé¢ç«¯ã€å®‰å“ç«¯å­å·¥ç¨‹
-â”œâ”€â”€ core/             # ä¸­å¤®åŽ¨æˆ¿æ ¸å¿ƒé€»è¾‘ä¸Žç®¡çº¿
-â”œâ”€â”€ docs/             # æž¶æž„è¯´æ˜Žã€æµç¨‹ã€SOPã€éœ€æ±‚å½’æ¡£
-â”œâ”€â”€ scripts/          # è¾…åŠ©è„šæœ¬ï¼ˆè‡ªåŠ¨åŒ–ã€CIã€æœ¬åœ°å·¥å…·ï¼‰
-â”œâ”€â”€ tests/            # å•å…ƒã€é›†æˆã€ç«¯åˆ°ç«¯æµ‹è¯•
-â”œâ”€â”€ tools/            # å¤–éƒ¨èµ„æºã€äºŒè¿›åˆ¶å·¥å…·ã€ä¸´æ—¶ä¾èµ–
-â””â”€â”€ data/             # ç¤ºä¾‹ç´ æã€æ¨¡åž‹ç¼“å­˜ï¼ˆå— .gitignore ç®¡ç†ï¼‰
-```
+`
+µç×ÓÒÂ¹ñ1.0/
+©À©¤©¤ app/              # ×ÀÃæ¶Ë¡¢°²×¿¶Ë×Ó¹¤³Ì
+©À©¤©¤ core/             # ÖÐÑë³ø·¿ºËÐÄÂß¼­
+©À©¤©¤ docs/             # ¼Ü¹¹¡¢Á÷³Ì¡¢½Ó¿Ú¡¢SOP µÈÎÄµµ
+©À©¤©¤ scripts/          # ¸¨Öú½Å±¾¡¢×Ô¶¯»¯¹¤¾ß
+©À©¤©¤ tests/            # µ¥Ôª / ¼¯³É / ¶Ëµ½¶Ë²âÊÔ
+©À©¤©¤ tools/            # µÚÈý·½¹¤¾ß¡¢ÁÙÊ±ÒÀÀµ
+©¸©¤©¤ archives/         # bundle µÈ¿ìÕÕ±¸·Ý
+`
 
-## ä¸‹ä¸€æ­¥
+## ¹Ø¼üÎÄµµ
 
-1. é…ç½® `.gitignore`ã€`pyproject.toml`ã€è´¨é‡å·¥å…·ä¸Ž `pre-commit`ã€‚
-2. è¡¥é½ Stage è§„åˆ’æ–‡æ¡£ï¼ˆ`docs/stages.md`ã€`docs/workflow.md` ç­‰ï¼‰ã€‚
-3. å»ºç«‹åˆæ¬¡æäº¤ä¸Žå¤‡ä»½ç­–ç•¥ï¼Œç¡®ä¿åŽç»­å¼€å‘å¯è¿½æº¯ã€‚
+- [ÖÐÑë³ø·¿½Ó¿ÚËµÃ÷](docs/interfaces/central_kitchen.md)
+- [ÕûÌå¹¤×÷Á÷](docs/workflow.md)
+- [ÈÎÎñ°ü / ±¨¸æ×Ö¶Î¹æ·¶](docs/file_conventions.md)
+- [½×¶Î¹æ»®](docs/stages.md)
+- [¹¤×÷Çø¿´°åÓëÈÕÖ¾](docs/workspace/)
+
+## ¿ìËÙÌåÑé
+
+1. ×¼±¸ËØ²Ä£ºÔÚ data/demo_input/Input_Raw/ ·ÅÖÃÊ¾Àý¿îÊ½¡£
+2. ÔËÐÐÖÐÑë³ø·¿£º
+   `ash
+   PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+   python -m scripts.central_kitchen \
+     --input data/demo_input/Input_Raw \
+     --output data/demo_output \
+     --devices device1,device2,device3 \
+     --price 299 --category tee --watermark µç×ÓÒÂ¹ñ
+   `
+3. ²é¿´Êä³ö£ºOutput_Batch_Phone_* Ä¿Â¼Óë eports/delivery_report.json¡£
+4. Ö´ÐÐ²âÊÔ£ºPYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest¡£
+
+## Î¬»¤¼ÇÂ¼
+
+- ×îÐÂ bundle£ºrchives/stage1c-final.bundle
+- ²âÊÔÈÕÖ¾Ä¿Â¼£ºeports/testlogs/
+- ÈÕ³£¹¤×÷Á÷Óë´ý°ì£ºdocs/workspace/board.md¡¢workspace1.md
+
+ÈôÐèÖØÐÂÆô¶¯ºóÐø½×¶Î£¬ÇëÏÈÔÄ¶Á½Ó¿ÚËµÃ÷ºÍ¹¤×÷Á÷ÎÄµµ£¬È·±£ÓëÏÖÓÐÖÐÑë³ø·¿Êä³ö±£³ÖÒ»ÖÂ¡£

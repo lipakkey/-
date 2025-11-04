@@ -1,19 +1,64 @@
-# å·¥ä½œæµæ¦‚è§ˆ
+# ¹¤×÷Á÷¸ÅÀÀ
 
-## Stage 1ï¼šä¸­å¤®åŽ¨æˆ¿
-1. **ç´ æå‡†å¤‡**ï¼š`Input_Raw/<style>/` ä¸‹å­˜æ”¾ `desc.txt`ã€å›¾ç‰‡ã€å¯é€‰ `meta.yaml`ã€‚
-2. **æ–‡æ¡ˆç”Ÿæˆ**ï¼š`CopywritingGenerator` ä½¿ç”¨æ¨¡æ¿ + æ¨¡åž‹ç”Ÿæˆå¤šç‰ˆæœ¬æè¿°ï¼Œæ•æ„Ÿè¯/å“ç‰Œåˆ«åæ›¿æ¢ã€‚
-3. **å›¾ç‰‡æ°´å°**ï¼š`WatermarkProcessor` æ‰¹é‡ä¸ºä¸»å›¾ã€è§„æ ¼å›¾æ·»åŠ â€œç”µå­è¡£æŸœâ€æ–‡å­—æ°´å°ã€‚
-4. **å•æ¬¾æ‰“åŒ…**ï¼š`StyleProcessor` ç”Ÿæˆ `text/`ã€`images/`ã€`manifest.json`ï¼Œè®°å½•æ•æ„Ÿè¯å‘½ä¸­ã€‚
-5. **ä»»åŠ¡åˆ†é…**ï¼š`TaskPartitioner` å°†ä»»åŠ¡å‡åˆ†åˆ° `Output_Batch_Phone_<n>/`ã€‚
-6. **æŠ¥å‘Šæ±‡æ€»**ï¼š`ReportBuilder` è¾“å‡º `reports/delivery_report.json`ï¼ŒåŒ…å«æˆåŠŸæ•°ã€å¤±è´¥åˆ—è¡¨ã€æ•æ„Ÿè¯å‘½ä¸­ã€æ¯è®¾å¤‡ä»»åŠ¡é‡ã€‚
+## Stage 1£ºÖÐÑë³ø·¿
+1. **ËØ²Ä×¼±¸**£ºInput_Raw/<style>/ ·ÅÖÃ desc.txt¡¢Í¼Æ¬ºÍ¿ÉÑ¡ meta.yaml¡£
+2. **ÎÄ°¸Éú³É**£ºCopywritingGenerator ¸ù¾ÝÄ£°åµ÷ÓÃ±¾µØÄ£ÐÍ£¬Êä³ö¶à°æ±¾ÎÄ°¸²¢Ö´ÐÐÃô¸Ð´ÊÌæ»»¡£
+3. **Í¼Æ¬Ë®Ó¡**£ºWatermarkProcessor ÎªÖ÷Í¼¡¢¹æ¸ñÍ¼ÅúÁ¿Ìí¼Ó¡°µç×ÓÒÂ¹ñ¡±ÎÄ×ÖË®Ó¡¡£
+4. **µ¥¿î´ò°ü**£ºStyleProcessor Éú³É 	ext/¡¢images/ Óë manifest.json£¬¼ÇÂ¼ÉÏÏÂÎÄÓëÃô¸Ð´ÊÃüÖÐ¡£
+5. **ÈÎÎñ·ÖÅä**£ºTaskPartitioner ½«ÈÎÎñ¾ù·Öµ½ Output_Batch_Phone_<n>/£¬Ð´ÈëÅú´Î atch_manifest.json¡£
+6. **±¨¸æ»ã×Ü**£ºReportBuilder Êä³ö eports/delivery_report.json£¬Í³¼Æ³É¹¦Êý¡¢Ê§°ÜÁÐ±í¡¢Ã¿Éè±¸ÈÎÎñÁ¿ÓëÃô¸Ð´ÊÃüÖÐ¡£
 
-## Stage 2ï¼ˆè§„åˆ’ï¼‰
-- æ¡Œé¢ç«¯åº”ç”¨è´Ÿè´£ç´ æç®¡ç†ã€é…ç½®è°ƒæ•´ã€è¿è¡ŒçŠ¶æ€å±•ç¤ºã€æ—¥å¿—åŒæ­¥ã€‚
-- åŒæ­¥æ¨¡å—è¯»å– `Output_Batch_Phone_<n>/`ï¼Œå¯¹æŽ¥ USB/ADB å¤åˆ¶ï¼Œå¹¶ç›‘æŽ§å®‰å“ç«¯å›žä¼ æ—¥å¿—ã€‚
+`mermaid
+flowchart LR
+    A[Input_Raw Ä¿Â¼] --> B[Copywriting Éú³É]
+    B --> C[Watermark Åú´¦Àí]
+    C --> D[StyleProcessor µ¥¿î´ò°ü]
+    D --> E[TaskPartitioner ²ð·Ö]
+    E --> F[Output_Batch_Phone_*]
+    E --> G[ReportBuilder »ã×Ü]
+    F --> H[°²×¿Ö´ÐÐÆ÷]
+    H --> I[ÈÕÖ¾»Ø´« / sync/]
+`
 
-## Stage 4ï¼ˆè§„åˆ’ï¼‰
-- å®‰å“æ‰§è¡Œå™¨è¯»å–æ‰¹æ¬¡ä»»åŠ¡ï¼ŒæŒ‰ manifest æ­¥éª¤å®Œæˆå‘å¸ƒï¼›`result.json` å›žä¼ æ¡Œé¢ç«¯ã€‚
-- çŠ¶æ€æœºåŒ…å«ï¼šçŽ¯å¢ƒæ£€æŸ¥ â†’ ä»»åŠ¡å¾ªçŽ¯ â†’ å¤±è´¥é‡è¯• â†’ æ—¥å¿—å†™å…¥/å›žä¼ ã€‚
+### Ê§°ÜÖØÊÔÓëÈË¹¤¸ÉÔ¤
+- µ¥¿î´¦ÀíÊ§°Ü»áÐ´Èë PipelineResult.failures£¬±¨¸æÖÐ¿É¼û¡£
+- ½¨ÒéÈË¹¤¼ì²éÊ§°ÜÅú´Î»òÃô¸Ð´ÊÃüÖÐ¿î£¬±ØÒªÊ±µ÷ÕûËØ²ÄºóÖØÅÜ¡£
+- CLI ÔËÐÐÊ§°Ü³£¼ûÔ­Òò£ºÉè±¸ ID ÊýÁ¿²»×ã¡¢ÊäÈëÄ¿Â¼È±ÉÙ desc.txt¡£
 
-> éšé˜¶æ®µæŽ¨è¿›ï¼Œå°†åœ¨æ­¤æ–‡æ¡£è¿½åŠ æ—¶åºå›¾ã€å¼‚å¸¸æµç¨‹åŠå›žä¼ é“¾è·¯ã€‚
+### ·ç¿ØÓë²Ù×÷½¨Òé
+- ÈÎÎñË³ÐòËæ»ú»¯¡¢²Ù×÷¼äËæ»úÑÓ³Ù¡¢ÈÎÎñ¼äºê¹ÛÐÝÏ¢¾ù¿É½µµÍ·ç¿Ø·çÏÕ¡£
+- ·¢²¼Ç°¿ÉÈË¹¤³é²éÎÄ°¸ÓëÍ¼Æ¬£¬±ÜÃâÃô¸Ð´Ê»ò°æÈ¨ÎÊÌâ¡£
+
+### Óë×ÀÃæ¶Ë¶Ô½Ó
+- ×ÀÃæ¶ËÐè¶ÁÈ¡ Output_Batch_Phone_<n>/ µÄ atch_manifest.json¡¢	ext/¡¢images/¡£
+- ÐèÒªÕ¹Ê¾ delivery_report.json ÄÚµÄ³É¹¦Í³¼Æ¡¢Ãô¸Ð´ÊÃüÖÐÐÅÏ¢¡£
+
+### Óë°²×¿Ö´ÐÐÆ÷¶Ô½Ó
+- °²×¿¶ËÐè¸ù¾Ý atch_manifest.json ÖÐµÄ 	itle_file¡¢description_files¡¢images ½øÐÐ²Ù×÷¡£
+- manifest.json ÄÚµÄ sensitive_hits¡¢context ¿ÉÓÃÓÚ°²È«¼ì²é»ò UI ÌáÊ¾¡£
+
+### ÈÕÖ¾¹éµµ
+- ½¨Òé½«°²×¿»Ø´«ÈÕÖ¾·ÅÔÚ sync/device_<id>/YYYYMMDD/£¬×ÀÃæ¶ËÔÙ»ã×Üµ½ eports/logs/<date>/¡£
+- Ã¿´ÎÔËÐÐÖÐÑë³ø·¿ºó£¬±¸·Ý eports/delivery_report.json ÓëÅú´ÎÄ¿Â¼¹©ËÝÔ´¡£
+
+### Ê¹ÓÃ bundle ¿ìÕÕ»Ö¸´
+1. ÔËÐÐ git bundle create archives/<name>.bundle master ±¸·Ý¡£
+2. »Ö¸´Ê±Ê¹ÓÃ git clone bundle <dir> »ò git fetch bundle master¡£
+
+### Stage 1 ÑéÊÕ Checklist
+- [ ] ËùÓÐÊäÈë¿îÉú³É³É¹¦£¬ÎÞÊ§°ÜÏî¡£
+- [ ] Åú´ÎÄ¿Â¼·ÖÅäÕýÈ·£¬Éè±¸ÊýÁ¿Æ¥Åä¡£
+- [ ] ±¨¸æÉú³É²¢¼ÇÂ¼Ãô¸Ð´ÊÃüÖÐ¡£
+- [ ] ²âÊÔ£¨pytest¡¢ruff¡¢mypy£©Í¨¹ý²¢¼ÇÂ¼ÈÕÖ¾¡£
+- [ ] Éú³É×îÐÂ bundle ±¸·Ý²¢Ð´Èë¹¤×÷ÈÕÖ¾¡£
+
+## Stage 2£¨¹æ»®£©
+- ×ÀÃæ¶Ë¸ºÔðËØ²Ä¹ÜÀí¡¢ÅäÖÃ±à¼­¡¢Í¬²½¿ØÖÆ¡¢ÈÕÖ¾¿ÉÊÓ»¯¡£
+- ÐèÒª¶îÍâµÄ UI ²ã¡¢·þÎñ²ã£¨ADB/USB¡¢ÈÕÖ¾¾ÛºÏ£©ÓëÅäÖÃ¼ÓÔØÄ£¿é¡£
+
+## Stage 4£¨¹æ»®£©
+- °²×¿Ö´ÐÐÆ÷´ÓÅú´ÎÄ¿Â¼¶ÁÈ¡ÈÎÎñ£¬°´ manifest ×Ô¶¯·¢²¼¡£
+- ×´Ì¬»ú£º»·¾³¼ì²é ¡ú ÈÎÎñÑ­»· ¡ú Ê§°ÜÖØÊÔ/ÈË¹¤ÌáÊ¾ ¡ú ÈÕÖ¾Ð´Èë ¡ú »Ø´«¡£
+- »Ø´«ÎÄ¼þ esult.json¡¢session.log ÓÃÓÚ×ÀÃæ¶Ë»ã×ÜÓë QA¡£
+
+> Ëæ½×¶ÎÍÆ½ø£¬»á³ÖÐø²¹³ä¸üÏêÏ¸µÄÁ÷³ÌÓë½Ó¿ÚËµÃ÷¡£
